@@ -1,18 +1,36 @@
 package org.example.model;
 
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.*;
 
+
+@Entity
+@Table(name = "courses")
 public class Course {
-    private java.lang.Integer id;
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "course_name")
     private String courseName;
+
+    @Column(name = "study_year")
     private int studyYear;
-    private List<Student> students;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "students_courses",
+            joinColumns = {@JoinColumn (name = "course_id")},
+            inverseJoinColumns = {@JoinColumn (name = "student_id")}
+    )
+    private Set<Student> students = new HashSet<>();
+
+    @Column(name = "university_id")
     private int universityId;
 
     public Course() {}
 
-    public Course(java.lang.Integer id, String name, int studyYear, List<Student> students, int universityId) {
+    public Course(int id, String name, int studyYear, Set<Student> students, int universityId) {
         this.id = id;
         this.courseName = name;
         this.studyYear = studyYear;
@@ -20,11 +38,11 @@ public class Course {
         this.universityId = universityId;
     }
 
-    public java.lang.Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(java.lang.Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -44,7 +62,7 @@ public class Course {
         this.studyYear = studyYear;
     }
 
-    public List<Student> getStudents() {
+    public Set<Student> getStudents() {
         return students;
     }
 
@@ -52,7 +70,7 @@ public class Course {
         return universityId;
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(Set<Student> students) {
         this.students = students;
     }
 

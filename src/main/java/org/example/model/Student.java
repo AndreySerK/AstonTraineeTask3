@@ -1,23 +1,39 @@
 package org.example.model;
 
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name = "students")
 public class Student {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "second_name")
     private String secondName;
+
     private int age;
+
     private String from;
+
+    @Column(name = "university_id")
     private int universityId;
-    private List<Course> courses;
+
+    @ManyToMany(mappedBy = "students")
+    private Set<Course> courses;
 
     public Student() {
     }
 
-    public Student(int id, String firstName, String secondName, int age, String from, int universityId, List<Course> courses) {
+    public Student(int id, String firstName, String secondName, int age, String from, int universityId, Set<Course> courses) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -75,11 +91,11 @@ public class Student {
         this.universityId = universityId;
     }
 
-    public List<Course> getCourses() {
+    public Set<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(List<Course> courses) {
+    public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
 
