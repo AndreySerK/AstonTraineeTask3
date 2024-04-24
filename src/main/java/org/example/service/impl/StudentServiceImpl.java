@@ -1,16 +1,20 @@
 package org.example.service.impl;
 
-import org.example.db.impl.ConnectionManagerImpl;
 import org.example.model.Student;
 import org.example.repository.StudentRepository;
-import org.example.repository.impl.StudentRepositoryImpl;
 import org.example.service.StudentService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public class StudentServiceImpl implements StudentService {
 
-    private StudentRepository repository = new StudentRepositoryImpl(new ConnectionManagerImpl());
+    private final StudentRepository repository;
+
+    public StudentServiceImpl(StudentRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public void save(Student student) {
         repository.save(student);
@@ -18,12 +22,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student with id = " + id + " not found"));
     }
 
     @Override
-    public boolean deleteById(Integer id) {
-        return repository.deleteById(id);
+    public void deleteById(Integer id) {
+        repository.deleteById(id);
     }
 
     @Override

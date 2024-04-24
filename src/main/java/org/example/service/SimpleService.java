@@ -8,7 +8,7 @@ public interface SimpleService<T,K> {
 
     T findById(K id);
 
-    boolean deleteById(K id);
+    void deleteById(K id);
 
     List<T> findAll();
 }

@@ -1,18 +1,21 @@
 package org.example.service.impl;
 
-import org.example.db.impl.ConnectionManagerImpl;
 import org.example.model.Course;
 import org.example.repository.CourseRepository;
-import org.example.repository.impl.CourseRepositoryImpl;
 import org.example.service.CourseService;
-import org.example.service.SimpleService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Stream;
+
 
 public class CourseServiceImpl implements CourseService {
 
-    CourseRepository repository = new CourseRepositoryImpl(new ConnectionManagerImpl());
+    private final CourseRepository repository;
+
+
+    public CourseServiceImpl(CourseRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void save(Course course) {
@@ -21,12 +24,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course findById(Integer id) {
-        return repository.findById(id);
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Course with id = " + id + " not found"));
     }
 
     @Override
-    public boolean deleteById(Integer id) {
-        return repository.deleteById(id);
+    public void deleteById(Integer id) {
+        repository.deleteById(id);
     }
 
     @Override

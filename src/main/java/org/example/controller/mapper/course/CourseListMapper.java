@@ -3,6 +3,7 @@ package org.example.controller.mapper.course;
 import org.example.model.Course;
 import org.example.controller.dto.course.CourseForUniversityDto;
 import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 

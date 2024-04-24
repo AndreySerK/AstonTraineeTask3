@@ -18,7 +18,7 @@ class CourseServletTest extends Mockito {
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private HttpServletResponse response = mock(HttpServletResponse.class);
     private CourseService service = mock(CourseServiceImpl.class);
-    private CourseServlet servlet = new CourseServlet(service);
+    private CourseController servlet = new CourseController(service);
 
 
     @Test
