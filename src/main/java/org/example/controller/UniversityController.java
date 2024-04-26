@@ -5,6 +5,7 @@ import org.example.model.University;
 import org.example.service.UniversityService;
 import org.example.controller.dto.university.UniversityDto;
 import org.example.controller.mapper.university.UniversityDtoMapper;
+import org.example.service.impl.UniversityServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@RestController("/university")
+@RestController
+@RequestMapping("/university")
 public class UniversityController {
 
     private final UniversityService service;
@@ -25,7 +27,7 @@ public class UniversityController {
     }
 
     @GetMapping("/get/{id}")
-    protected UniversityDto getUniversityById(@PathVariable Integer id) {
+    protected UniversityDto getUniversityById(@PathVariable(name = "id") Integer id) {
         University byId = service.findById(id);
         return universityDtoMapper.toDto(byId);
     }
@@ -38,7 +40,7 @@ public class UniversityController {
     }
 
     @DeleteMapping("/delete/{id}")
-    protected ResponseEntity<?> deleteById(@PathVariable Integer id) {
+    protected ResponseEntity<?> deleteById(@PathVariable(name = "id") Integer id) {
         service.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

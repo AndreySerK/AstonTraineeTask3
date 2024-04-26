@@ -1,7 +1,9 @@
 package org.example.model;
 
-import javax.persistence.*;
-import java.util.*;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -18,19 +20,19 @@ public class Course {
     @Column(name = "study_year")
     private int studyYear;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "students_courses",
             joinColumns = {@JoinColumn (name = "course_id")},
             inverseJoinColumns = {@JoinColumn (name = "student_id")}
     )
-    private Set<Student> students = new HashSet<>();
+    private List<Student> students = new ArrayList<>();
 
     @Column(name = "university_id")
     private int universityId;
 
     public Course() {}
 
-    public Course(int id, String name, int studyYear, Set<Student> students, int universityId) {
+    public Course(int id, String name, int studyYear, List<Student> students, int universityId) {
         this.id = id;
         this.courseName = name;
         this.studyYear = studyYear;
@@ -62,7 +64,7 @@ public class Course {
         this.studyYear = studyYear;
     }
 
-    public Set<Student> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 
@@ -70,7 +72,7 @@ public class Course {
         return universityId;
     }
 
-    public void setStudents(Set<Student> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 

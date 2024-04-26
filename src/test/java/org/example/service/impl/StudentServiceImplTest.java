@@ -2,7 +2,6 @@ package org.example.service.impl;
 
 import org.example.model.Student;
 import org.example.repository.StudentRepository;
-import org.example.repository.impl.StudentRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StudentServiceImplTest extends Mockito {
 
@@ -20,7 +18,7 @@ class StudentServiceImplTest extends Mockito {
 
     @BeforeEach
     void setup() {
-        repository = mock(StudentRepositoryImpl.class);
+        repository = mock(StudentRepository.class);
         student.setId(1);
         student.setFirstName("Test");
         student.setSecondName("Test");
@@ -38,22 +36,20 @@ class StudentServiceImplTest extends Mockito {
 
     @Test
     void findByIdTest() {
-        when(repository.findById(1)).thenReturn(student);
+        when(repository.findById(2).orElseThrow()).thenReturn(student);
 
-        Student expectedStudent = repository.findById(1);
+        Student expectedStudent = repository.findById(2).orElseThrow();
 
-        verify(repository, times(1)).findById(1);
+        verify(repository, times(1)).findById(2);
         assertEquals(expectedStudent, student);
     }
 
     @Test
     void deleteByIdTest() {
-        when(repository.deleteById(1)).thenReturn(true);
 
-        boolean expectedResult = repository.deleteById(1);
+        repository.deleteById(1);
 
         verify(repository, times(1)).deleteById(1);
-        assertTrue(expectedResult);
     }
 
     @Test

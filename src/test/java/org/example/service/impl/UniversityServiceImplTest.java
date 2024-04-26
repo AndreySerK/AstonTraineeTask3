@@ -2,7 +2,6 @@ package org.example.service.impl;
 
 import org.example.model.University;
 import org.example.repository.UniversityRepository;
-import org.example.repository.impl.UniversityRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UniversityServiceImplTest extends Mockito {
 
@@ -20,7 +18,7 @@ class UniversityServiceImplTest extends Mockito {
 
     @BeforeEach
     void setup() {
-        repository = mock(UniversityRepositoryImpl.class);
+        repository = mock(UniversityRepository.class);
         university.setId(1);
         university.setName("Test");
         university.setCity("Test");
@@ -36,29 +34,27 @@ class UniversityServiceImplTest extends Mockito {
 
     @Test
     void findByIdTest() {
-        when(repository.findById(1)).thenReturn(university);
+        when(repository.findById(2).orElseThrow()).thenReturn(university);
 
-        University expectedUniversity = repository.findById(1);
+        University expectedUniversity = repository.findById(2).orElseThrow();
 
-        verify(repository, times(1)).findById(1);
+        verify(repository, times(1)).findById(2);
         assertEquals(expectedUniversity, university);
     }
 
     @Test
     void deleteByIdTest() {
-        when(repository.deleteById(1)).thenReturn(true);
 
-        boolean expectedResult = repository.deleteById(1);
+        repository.deleteById(1);
 
         verify(repository, times(1)).deleteById(1);
-        assertTrue(expectedResult);
     }
 
     @Test
     void findAllTest() {
-        List<University> universitys = new ArrayList<>();
-        universitys.add(university);
-        when(repository.findAll()).thenReturn(universitys);
+        List<University> universities = new ArrayList<>();
+        universities.add(university);
+        when(repository.findAll()).thenReturn(universities);
 
         List<University> expectedResult = repository.findAll();
 

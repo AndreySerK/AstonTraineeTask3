@@ -1,10 +1,9 @@
 package org.example.model;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -22,18 +21,19 @@ public class Student {
 
     private int age;
 
+    @Column(name = "from_city")
     private String from;
 
     @Column(name = "university_id")
     private int universityId;
 
     @ManyToMany(mappedBy = "students")
-    private Set<Course> courses;
+    private List<Course> courses;
 
     public Student() {
     }
 
-    public Student(int id, String firstName, String secondName, int age, String from, int universityId, Set<Course> courses) {
+    public Student(int id, String firstName, String secondName, int age, String from, int universityId, List<Course> courses) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -91,11 +91,11 @@ public class Student {
         this.universityId = universityId;
     }
 
-    public Set<Course> getCourses() {
+    public List<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(Set<Course> courses) {
+    public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
 

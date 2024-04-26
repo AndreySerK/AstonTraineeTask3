@@ -1,16 +1,13 @@
 package org.example.controller.mapper.course;
 
-
-import org.example.model.Course;
 import org.example.controller.dto.course.CourseDto;
-
 import org.example.controller.dto.course.CourseForUniversityDto;
 import org.example.controller.dto.course.IncomingCourseDto;
+import org.example.model.Course;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-
+@Component
 @Mapper
 public interface CourseDtoMapper {
 

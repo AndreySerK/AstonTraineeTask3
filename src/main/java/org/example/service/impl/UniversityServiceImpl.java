@@ -1,12 +1,17 @@
 package org.example.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Transient;
 import org.example.model.University;
 import org.example.repository.UniversityRepository;
 import org.example.service.UniversityService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+@Service
+@Transactional
 public class UniversityServiceImpl implements UniversityService {
 
     private final UniversityRepository repository;

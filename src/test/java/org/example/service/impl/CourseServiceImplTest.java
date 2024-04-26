@@ -1,26 +1,28 @@
 package org.example.service.impl;
 
+import org.example.config.AppConfig;
 import org.example.model.Course;
 import org.example.repository.CourseRepository;
-import org.example.repository.impl.CourseRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CourseServiceImplTest extends Mockito {
 
     CourseRepository repository;
+
     Course course = new Course();
 
     @BeforeEach
     void setup() {
-        repository = mock(CourseRepositoryImpl.class);
+        repository = mock(CourseRepository.class);
         course.setId(1);
         course.setCourseName("Test");
         course.setStudyYear(2020);
@@ -36,22 +38,19 @@ class CourseServiceImplTest extends Mockito {
 
     @Test
     void findByIdTest() {
-        when(repository.findById(1)).thenReturn(course);
+        when(repository.findById(3).orElseThrow()).thenReturn(course);
 
-        Course expectedCourse = repository.findById(1);
+        Course expectedCourse = repository.findById(3).orElseThrow();
 
-        verify(repository, times(1)).findById(1);
+        verify(repository, times(1)).findById(3);
         assertEquals(expectedCourse, course);
     }
 
     @Test
     void deleteByIdTest() {
-        when(repository.deleteById(1)).thenReturn(true);
-
-        boolean expectedResult = repository.deleteById(1);
+        repository.deleteById(1);
 
         verify(repository, times(1)).deleteById(1);
-        assertTrue(expectedResult);
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 @Mapper(uses = CourseDtoMapper.class)
 public interface CourseListMapper {
     List<CourseForUniversityDto> toDtoList(List<Course> courses);

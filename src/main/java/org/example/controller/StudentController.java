@@ -1,18 +1,19 @@
 package org.example.controller;
 
-import org.example.model.Student;
-import org.example.service.StudentService;
 import org.example.controller.dto.student.StudentDto;
 import org.example.controller.mapper.student.StudentDtoMapper;
+import org.example.model.Student;
+import org.example.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-
-@RestController("/student")
+@RestController
+@RequestMapping("/student")
 public class StudentController {
 
     private final StudentService service;
@@ -24,20 +25,20 @@ public class StudentController {
     }
 
     @GetMapping("/get/{id}")
-    protected StudentDto getStudentById (@PathVariable Integer id) {
+    protected StudentDto getStudentById(@PathVariable(name = "id") Integer id) {
         Student byId = service.findById(id);
         return studentDtoMapper.toDto(byId);
     }
 
     @GetMapping("/all")
-    protected List<StudentDto> getAllStudents ()  {
+    protected List<StudentDto> getAllStudents() {
         List<StudentDto> students = new ArrayList<>();
         service.findAll().forEach(c -> students.add(studentDtoMapper.toDto(c)));
         return students;
     }
 
     @DeleteMapping("/delete/{id}")
-    protected ResponseEntity<?> deleteById(@PathVariable Integer id) {
+    protected ResponseEntity<?> deleteById(@PathVariable(name = "id") Integer id) {
         service.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

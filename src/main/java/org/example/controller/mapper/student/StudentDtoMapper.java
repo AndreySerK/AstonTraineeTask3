@@ -5,6 +5,7 @@ import org.example.controller.dto.student.StudentDto;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
+@Component
 @Mapper
 public interface StudentDtoMapper {
 

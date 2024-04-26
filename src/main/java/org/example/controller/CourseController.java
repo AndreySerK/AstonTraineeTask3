@@ -1,26 +1,22 @@
 package org.example.controller;
 
-import com.google.gson.Gson;
-import org.apache.commons.io.IOUtils;
-import org.example.model.Course;
-import org.example.service.CourseService;
 import org.example.controller.dto.course.CourseDto;
 import org.example.controller.dto.course.IncomingCourseDto;
 import org.example.controller.mapper.course.CourseDtoMapper;
 import org.example.controller.mapper.student.StudentListMapper;
+import org.example.model.Course;
+import org.example.service.CourseService;
+import org.example.service.impl.CourseServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.controller.utils.ServletUtils.printError;
-import static org.example.controller.utils.ServletUtils.printResult;
 
-
-@RestController("/course")
+@RestController
+@RequestMapping("/course")
 public class CourseController {
 
     private final CourseService service;
@@ -34,7 +30,7 @@ public class CourseController {
     }
 
     @GetMapping("/get/{id}")
-    protected CourseDto getCourseById(@PathVariable Integer id) {
+    protected CourseDto getCourseById(@PathVariable(name = "id") Integer id) {
         Course byId = service.findById(id);
         CourseDto dto = courseDtoMapper.toDto(byId);
         dto.setStudents(studentListMapper.toDtoList(byId.getStudents().stream().toList()));
@@ -49,7 +45,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/delete/{id}")
-    protected ResponseEntity<?> deleteById(@PathVariable Integer id) {
+    protected ResponseEntity<?> deleteById(@PathVariable(name = "id") Integer id) {
         service.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
