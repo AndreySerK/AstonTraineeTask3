@@ -1,16 +1,13 @@
 package org.example.service.impl;
 
-import org.example.config.AppConfig;
 import org.example.model.Course;
 import org.example.repository.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,7 +35,7 @@ class CourseServiceImplTest extends Mockito {
 
     @Test
     void findByIdTest() {
-        when(repository.findById(3).orElseThrow()).thenReturn(course);
+        when(repository.findById(3)).thenReturn(Optional.ofNullable(course));
 
         Course expectedCourse = repository.findById(3).orElseThrow();
 

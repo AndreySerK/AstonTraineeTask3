@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,7 +37,7 @@ class StudentServiceImplTest extends Mockito {
 
     @Test
     void findByIdTest() {
-        when(repository.findById(2).orElseThrow()).thenReturn(student);
+        when(repository.findById(2)).thenReturn(Optional.ofNullable(student));
 
         Student expectedStudent = repository.findById(2).orElseThrow();
 

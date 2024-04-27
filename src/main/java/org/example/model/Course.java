@@ -21,7 +21,7 @@ public class Course {
     private int studyYear;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "students_courses",
+    @JoinTable(name = "courses_students",
             joinColumns = {@JoinColumn (name = "course_id")},
             inverseJoinColumns = {@JoinColumn (name = "student_id")}
     )

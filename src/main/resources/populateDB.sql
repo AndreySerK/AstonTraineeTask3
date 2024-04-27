@@ -31,5 +31,5 @@ INSERT INTO students (first_name, second_name, age, from_city, university_id)
 VALUES ('Kris', 'Bird', 19, 'Moscow', 2);
 
 
-INSERT INTO students_courses
-VALUES (1,1),(2,1),(3,2),(4,3),(5,4),(6,5),(7,4);
+INSERT INTO courses_students
+VALUES (1,1),(1,2),(2,3),(3,4),(4,5),(4,7),(5,6);

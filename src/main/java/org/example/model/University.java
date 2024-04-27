@@ -19,9 +19,11 @@ public class University {
     private String country;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "university_id")
     private List<Student> students;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "university_id")
     private List<Course> courses;
 
     public University() {
