@@ -1,69 +1,106 @@
 package org.example.controller;
 
-import org.example.config.AppConfig;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.example.controller.dto.course.CourseDto;
 import org.example.controller.dto.course.IncomingCourseDto;
+import org.example.controller.mapper.course.CourseDtoMapper;
+import org.example.controller.mapper.student.StudentListMapper;
 import org.example.model.Course;
 import org.example.service.CourseService;
-import org.example.service.impl.CourseServiceImpl;
+import org.hibernate.engine.spi.Status;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 
-@ExtendWith(SpringExtension.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = AppConfig.class)
-class CourseControllerTest extends Mockito {
+@ExtendWith(MockitoExtension.class)
+class CourseControllerTest {
 
-    private final CourseService service = mock(CourseServiceImpl.class);
+    @Mock
+    private CourseService service;
+    @Mock
+    private CourseDtoMapper courseDtoMapper;
+    @Mock
+    private StudentListMapper studentListMapper;
 
-    @Autowired
+    @InjectMocks
     private CourseController controller;
 
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = standaloneSetup(new CourseController(service, courseDtoMapper, studentListMapper)).build();
+    }
+
 
     @Test
-    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_getByIdTest() {
+    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_getByIdTest() throws Exception {
+        when(service.findById(1)).thenReturn(new Course());
+        when(courseDtoMapper.toDto(any(Course.class))).thenReturn(new CourseDto("Chemistry", 2020, 1, new ArrayList<>()));
 
-        when(service.findById(2)).thenReturn(new Course());
-
-        controller.getCourseById(2);
-
-        verify(controller, times(1)).getCourseById(2);
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/get/{id}", 1))
+                .andExpect(jsonPath("$.courseName").value("Chemistry"));
+        verify(service, times(1)).findById(1);
     }
 
     @Test
-    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_getAllTest() {
-        when(service.findAll()).thenReturn(new ArrayList<>());
+    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_getAllTest() throws Exception {
+        Course course = new Course();
+        List<Course> courses = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            courses.add(course);
+        }
+        when(courseDtoMapper.toDto(any(Course.class))).thenReturn(new CourseDto("Chemistry", 2020, 1, new ArrayList<>()));
+        when(service.findAll()).thenReturn(courses);
 
-        controller.getAllCourses();
-
-        verify(controller, times(1)).getAllCourses();
+        mockMvc.perform(MockMvcRequestBuilders.get("/course/all"))
+                        .andExpect(jsonPath("$", hasSize(5)));
+        verify(service, times(1)).findAll();
     }
 
     @Test
-    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_deleteByIdTest() {
+    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_deleteByIdTest() throws Exception {
 
-        controller.deleteById(1);
-
-        verify(controller, times(1)).deleteById(1);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/course/delete/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        verify(service, times(1)).deleteById(1);
     }
 
     @Test
-    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_saveTest() {
+    void whenCorrectUrlIsPassed_thenCorrectMethodIsCalled_saveTest() throws Exception {
 
         IncomingCourseDto dto = new IncomingCourseDto();
         dto.setCourseName("Physics");
         dto.setStudyYear(2015);
         dto.setUniversityId(2);
+        String jsonDto = new Gson().toJson(dto);
+        Course course = courseDtoMapper.toEntity(dto);
+        lenient().when(courseDtoMapper.toEntity(dto)).thenReturn(course);
 
-        controller.save(dto);
+        mockMvc.perform(MockMvcRequestBuilders.post("/course/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonDto))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
-        verify(controller, times(1)).save(dto);
+        verify(service, times(1)).save(course);
     }
 }

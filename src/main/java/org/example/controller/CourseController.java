@@ -23,6 +23,7 @@ public class CourseController {
     private final CourseDtoMapper courseDtoMapper;
     private final StudentListMapper studentListMapper;
 
+
     public CourseController(CourseService service, CourseDtoMapper courseDtoMapper, StudentListMapper studentListMapper) {
         this.service = service;
         this.courseDtoMapper = courseDtoMapper;
@@ -53,6 +54,6 @@ public class CourseController {
     @PostMapping("/save")
     protected ResponseEntity<?> save(@RequestBody IncomingCourseDto dto) {
         service.save(courseDtoMapper.toEntity(dto));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
