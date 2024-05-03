@@ -46,6 +46,6 @@ public class StudentController {
     @PostMapping("/save")
     protected ResponseEntity<?> save(@RequestBody StudentDto dto) {
         service.save(studentDtoMapper.toEntity(dto));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

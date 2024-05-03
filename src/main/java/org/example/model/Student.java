@@ -27,7 +27,7 @@ public class Student {
     @Column(name = "university_id")
     private int universityId;
 
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.REMOVE)
     private List<Course> courses;
 
     public Student() {

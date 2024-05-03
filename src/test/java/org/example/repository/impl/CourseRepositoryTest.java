@@ -36,7 +36,6 @@ class CourseRepositoryTest {
             new PostgreSQLContainer<>("postgres:15")
                     .withDatabaseName("test")
                     .withUsername("test")
-                    .withInitScript("db-migration.sql")
                     .withPassword("test");
 
     @BeforeAll

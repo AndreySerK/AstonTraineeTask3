@@ -48,6 +48,6 @@ public class UniversityController {
     @PostMapping("/save")
     protected ResponseEntity<?> save(@RequestBody IncomingUniversityDto dto) {
         service.save(universityDtoMapper.toEntity(dto));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
