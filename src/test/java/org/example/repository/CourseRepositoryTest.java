@@ -1,9 +1,8 @@
-package org.example.repository.impl;
+package org.example.repository;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.config.AppConfig;
 import org.example.model.Course;
-import org.example.repository.CourseRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

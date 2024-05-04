@@ -1,9 +1,8 @@
-package org.example.repository.impl;
+package org.example.repository;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.config.AppConfig;
 import org.example.model.Student;
-import org.example.repository.StudentRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = AppConfig.class)
-public class StudentRepositoryImplTest {
+public class StudentRepositoryTest {
 
     @Autowired
     StudentRepository studentRepository;
@@ -50,9 +49,9 @@ public class StudentRepositoryImplTest {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.username", container::getUsername);
-        registry.add("spring.datasource.password", container::getPassword);
+        registry.add("database.url", container::getJdbcUrl);
+        registry.add("database.username", container::getUsername);
+        registry.add("database.password", container::getPassword);
     }
 
 
